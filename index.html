@@ -1,0 +1,117 @@
+<html>
+	<head>
+			<br><br><br><br>
+			<h1> Employee Demo</h1>
+			<link rel="stylesheet" type="text/css" href="main.css">
+			<script src="/home/himani/Desktop/UI Session/JQuery/jquery-2.2.0.min.js"></script>
+			<script>
+				$(document).ready(function(){
+			    $("#getAll").click(function(){
+			        $.post("http://localhost:9000/student/all", function(obj, status){
+			            //alert("Data: " + JSON.stringify(obj) + "\nStatus: " + status);
+			            $("table tbody").empty();
+			           
+			            for(var i=0;i<obj.length;i++)
+			            {	$("table tbody").append("<tr>");
+			            	$("table tbody ").append("<td>"+obj[i].id+"</td>");
+			            	$("table tbody ").append("<td>"+obj[i].name+"</td>");
+			            	$("table tbody ").append("<td>"+obj[i].email+"</td></tr>");
+
+			            }
+			    });
+			    });
+
+			    $("#getId").click(function(){
+			    		var temp=$("#fetchid").val()
+			            //alert("value is"+temp)
+			        	$.get("http://localhost:9000/student/"+temp, function(obj, status){
+			            //alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+			             $("table tbody").empty();
+			             
+			            if(obj.id==temp)
+			            {
+			            	$("table tbody ").append("<td>"+obj.id+"</td>");
+			            	$("table tbody ").append("<td>"+obj.name+"</td>");
+			            	$("table tbody ").append("<td>"+obj.email+"</td>");
+			            	
+
+			    		}
+			    		else{
+			    			alert("No such id found !!")
+			    		}
+			    		
+
+			        });
+			    });
+
+			    $("#btn1").click(function(){
+			    	$("div").animate({right: '250px'},"slow");
+			    });
+			    $("#btn2").click(function(){
+			    	$("div").animate({left: '250px'},"slow");
+			    });
+			});
+
+
+			$(document).ready(function(){
+		     $("#save").click(function(){
+		    	var id=parseInt($('#fetchid').val());
+		    	var name=$('#fetchname').val();
+		    	var email=$('#fetchemail').val();
+		    	$.ajax({
+		    		url: "http://localhost:9000/student/save",
+		              type: "POST",
+		              data: JSON.stringify({"id":id,"name":name,"email":email}),
+		              contentType: "application/json",
+		              dataType: "json",
+		              success: function(data, status){ alert(data+" ; "+status)}
+		    	});
+		   
+		     /*  $.post("http://localhost:9000/student/all", function(data, status){
+		           alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+		        });*/
+		     });
+		 });
+
+			</script>
+
+	</head>
+	<body>
+		<br><br><br><br><br>
+		<label>Enter id :    </label>
+		<input type="text" id="fetchid" value=""></input>
+		<br><br><label>Enter name :  </label>
+		<input type="text" id="fetchname" value=""></input>
+		<br><br><label>Enter email :  </label>
+		<input type="text" id="fetchemail" value=""></input>
+
+		<br><br><br>
+
+		<input type="Button" id="getId" value="Fetch by ID" /><br><br>
+		<input type="Button" id="getAll" value="Fetch all" /><br><br>
+		<input type="Button" id="save" value="Save" /><br><br><br>
+		
+		<input type="button" id="btn1" value="<<"> </input>
+		<input type="button" id="btn2" value=">>"> </input>
+		<div>
+			<h3>Student Contents</h3>
+
+<table class="table-fill">
+<thead>
+<tr>
+<th class="text-left">ID</th>
+<th class="text-left">NAME</th>
+<th class="text-left">EMAIL</th>
+</tr>
+</thead>
+<tbody class="table-hover">
+
+</tbody>
+</table>
+		</div>	
+		</div>
+		
+	</body>
+	
+
+</html>
